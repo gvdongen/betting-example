@@ -30,6 +30,8 @@ Restate invokes your Durable Functions via RPC calls, which is very fast.
 Benchmarks of 3-step workflows can execute in 30 ms. 
 These kind of latencies are not possible with other existing workflow engines.
 
+[Blog on performance measurements](https://restate.dev/blog/restate-1.1.0-and-multiple-sdks-released/#performance-improvements)
+
 ## Application State
 
 Restate has an embedded K/V store that you can use to store the state of your application.
@@ -38,8 +40,13 @@ This state takes part in Durable Execution and is always up to date with the cod
 
 
 ## Versioning
-Blog post on our approach vs Temporal, Azure Durable Functions etc: https://restate.dev/blog/solving-durable-executions-immutability-problem
+[Blog post on our approach vs Temporal, Azure Durable Functions etc](https://restate.dev/blog/solving-durable-executions-immutability-problem)
 
+In short, we consider endpoints to be immutable. 
+When you deploy a new version, you register the endpoint with Restate and Restate will forward new requests to it. 
+Old requests will still be forwarded to the old version.
+You need to keep the old version around until all old requests are processed.
+The easiest way to do that is to split long-running workflows into multiple steps, with delayed calls in between them.
 
 
 ## Running the example

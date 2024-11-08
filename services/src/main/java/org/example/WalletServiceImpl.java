@@ -15,6 +15,12 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public void withdraw(ObjectContext ctx, int amt){
+        Long balance = ctx.get(BALANCE).orElse(0L);
+        ctx.set(BALANCE, balance - amt);
+    }
+
+    @Override
     public long getBalance(ObjectContext ctx){
         return ctx.get(BALANCE).orElse(0L);
     }

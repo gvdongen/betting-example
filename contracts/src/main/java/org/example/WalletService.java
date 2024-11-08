@@ -11,5 +11,8 @@ public interface WalletService {
     void deposit(ObjectContext ctx, int amt);
 
     @Handler
+    void withdraw(ObjectContext ctx, int amt);
+
+    @Handler
     long getBalance(ObjectContext ctx);
 }

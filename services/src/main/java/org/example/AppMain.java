@@ -20,6 +20,7 @@ public class AppMain {
             .bind(new RGServiceImpl())
             .bind(new WalletServiceImpl())
             .bind(new CommsServiceImpl())
+            .bind(new ExampleWorkflow())
             .buildAndListen();
   }
 }

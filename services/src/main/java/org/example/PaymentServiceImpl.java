@@ -2,15 +2,18 @@ package org.example;
 
 import dev.restate.sdk.Context;
 import dev.restate.sdk.JsonSerdes;
+import dev.restate.sdk.PreviewContext;
+import dev.restate.sdk.WorkflowContext;
 import dev.restate.sdk.annotation.Workflow;
+import dev.restate.sdk.common.RetryPolicy;
 import org.example.types.DepositRequest;
 
 import java.time.Duration;
 
-public class PaymentServiceImpl implements PaymentService{
+public class PaymentServiceImpl implements PaymentService {
 
     @Workflow
-    public boolean deposit(Context ctx, DepositRequest req) {
+    public boolean deposit(WorkflowContext ctx, DepositRequest req) {
         var amt = req.getAmount();
 
         // 0. Create the clients to interact with the other services
@@ -20,6 +23,10 @@ public class PaymentServiceImpl implements PaymentService{
 
         // 1. Check if the limit is passed, and update the limit
         boolean withinLimit = rgClient.updateLimit(amt).await();
+
+        PreviewContext.run(ctx,
+                RetryPolicy.defaultPolicy().setMaxAttempts(5).setMaxDelay(Duration.ofMinutes(2)),
+                () -> {/*Do something*/});
 
         if(!withinLimit){
             commsClient.send().notifyFailure(req.getEmail());

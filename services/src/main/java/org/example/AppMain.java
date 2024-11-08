@@ -9,20 +9,17 @@
  * https://github.com/restatedev/examples/
  */
 
-package my.example;
+package org.example;
 
-import dev.restate.sdk.Context;
-import dev.restate.sdk.annotation.Handler;
-import dev.restate.sdk.annotation.Service;
 import dev.restate.sdk.http.vertx.RestateHttpEndpointBuilder;
 
 public class AppMain {
   public static void main(String[] args) {
     RestateHttpEndpointBuilder.builder()
-            .bind(new PaymentService())
-            .bind(new RGService())
-            .bind(new WalletService())
-            .bind(new CommsService())
+            .bind(new PaymentServiceImpl())
+            .bind(new RGServiceImpl())
+            .bind(new WalletServiceImpl())
+            .bind(new CommsServiceImpl())
             .buildAndListen();
   }
 }

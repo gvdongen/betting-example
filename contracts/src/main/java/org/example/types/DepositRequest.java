@@ -1,4 +1,4 @@
-package my.example.types;
+package org.example.types;
 
 public class DepositRequest {
     private String walletId;

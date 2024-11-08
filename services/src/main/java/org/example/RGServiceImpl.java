@@ -1,4 +1,4 @@
-package my.example;
+package org.example;
 
 import dev.restate.sdk.JsonSerdes;
 import dev.restate.sdk.ObjectContext;
@@ -7,12 +7,11 @@ import dev.restate.sdk.annotation.VirtualObject;
 import dev.restate.sdk.common.StateKey;
 import dev.restate.sdk.common.TerminalException;
 
-@VirtualObject
-public class RGService {
+public class RGServiceImpl implements RGService {
 
     StateKey<Long> CUSTOMER_LIMIT = StateKey.of("limit", JsonSerdes.LONG);
 
-    @Handler
+    @Override
     public boolean updateLimit(ObjectContext ctx, long amount){
         Long limit = ctx.get(CUSTOMER_LIMIT).orElse(10000L);
 
@@ -24,7 +23,7 @@ public class RGService {
         return true;
     }
 
-    @Handler
+    @Override
     public void resetLimit(ObjectContext ctx, long amount){
         Long limit = ctx.get(CUSTOMER_LIMIT)
                 .orElseThrow(() -> new TerminalException("Limit not found"));

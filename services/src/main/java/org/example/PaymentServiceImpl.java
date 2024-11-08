@@ -1,17 +1,15 @@
-package my.example;
+package org.example;
 
 import dev.restate.sdk.Context;
 import dev.restate.sdk.JsonSerdes;
-import dev.restate.sdk.annotation.Handler;
-import dev.restate.sdk.annotation.Service;
-import my.example.types.DepositRequest;
+import dev.restate.sdk.annotation.Workflow;
+import org.example.types.DepositRequest;
 
 import java.time.Duration;
 
-@Service
-public class PaymentService {
+public class PaymentServiceImpl implements PaymentService{
 
-    @Handler
+    @Workflow
     public boolean deposit(Context ctx, DepositRequest req) {
         var amt = req.getAmount();
 
@@ -19,7 +17,6 @@ public class PaymentService {
         var rgClient = RGServiceClient.fromContext(ctx, req.getUserId());
         var commsClient = CommsServiceClient.fromContext(ctx);
         var walletClient = WalletServiceClient.fromContext(ctx, req.getWalletId());
-
 
         // 1. Check if the limit is passed, and update the limit
         boolean withinLimit = rgClient.updateLimit(amt).await();
